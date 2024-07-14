@@ -11,6 +11,11 @@ pub async fn download_file(url: &str, out_file: &str) -> Result<(), Box<dyn std:
 
     // Check if the response status is OK
     if response.status().is_success() {
+        let p = std::path::PathBuf::from(out_file);
+        let out_dir = p.parent().unwrap();
+        if !out_dir.exists() {
+            std::fs::create_dir_all(out_dir).unwrap();
+        }
         // Create or open the file
         let mut dest = File::create(out_file)?;
 
